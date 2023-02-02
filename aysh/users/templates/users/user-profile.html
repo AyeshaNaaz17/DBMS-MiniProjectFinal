@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <img src="{{profile.profile_image.url}}" style="max-width: 200px;" alt="">
+    <p><b>Name:</b>{{profile.name}}</p>
+    <!-- {% if request.user.profile.id != profile.id %} -->
+    <a class="btn btn-dark" href="{% url 'create-message' profile.id %}">Send Message</a>
+    <!-- {% endif %} -->
+    <p>{{profile.short_intro}}</p>
+    {% if profile.location %}
+    <p><b>Based in: </b>{{profile.location}}</p>
+    {% endif %}
+    <h5>About me</h5>
+    <p>{{profile.bio}}</p>
+    <h6>My posts</h6>
+    {% for submission in profile.submissions_set.all %}
+        <a href="{% url 'submission' submission.id %}">My publishes</a>
+        <p><b>Title </b>{{submission.title}}</p>
+        <img src="{{submission.featured_image.url}}" style="max-width: 200px;" alt="">
+        <hr>
+    {% endfor %}
+    {% for event in profile.events_set.all %}
+
+        <a href="{% url 'event'  event.id%}">My Events</a>
+        <p><b>Title </b>{{event.title}}</p>
+        <img src="{{event.featured_image.url}}" style="max-width: 200px;" alt="">
+        <p><i>Location </i>{{event.location}}</p>
+        <hr>
+
+    {% endfor %}
+    <hr>
+
+    
+
+{% endblock content %}

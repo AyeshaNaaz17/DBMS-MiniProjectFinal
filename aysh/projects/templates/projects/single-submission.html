@@ -1,0 +1,58 @@
+{% extends 'main.html' %}
+{% include "navbar.html" %}
+
+
+{% block content %}
+
+        <p><b>Title: </b>{{submission.title}}</p>
+        <p>Description: {{ submission.description }}</p>
+        {% if submission.featured_image %}
+            <p>Image: {{ submission.featured_image.url }}</p>
+        {% endif %}
+        <p>Vote{{submission.vote_total | pluralize:'s'}}: {{submission.vote_total}}</p>
+        {% for tag in tags %}
+            <span style="border: 1px solid grey;">{{tag}}</span>
+        {% endfor %}
+        <p>Created: {{ submission.created }}</p>
+        <form action="{% url 'post' %}"><button>Go back</button></form>
+        {% csrf_token %}
+        <hr>
+    {% if request.user.profile.id in  submission.reviewers %}
+    <p>You have already submitted your review for this post</p>
+    {% elif request.user.profile == submission.owner %}
+    <p>You cannot review your own work</p>
+    {% elif request.user.is_authenticated %}
+    <form class="form" action="{% url 'submission' submission.id %}" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form__field">
+            <label for="formInput#textarea">{{field.label}}</label>
+            {{field}}
+        
+        </div>
+        {% endfor %}
+        <input class="btn btn-dark" type="submit" value="Add Review">
+    </form>
+    {% else %}
+    <a href="{% url 'login' %}?next={{request.path}}">Please login to place your review</a>
+    {% endif %}
+
+
+        <div class="commentList">
+            {% for review in submission.review_set.all %}
+            {% if review.body %}
+            <div class="comment">
+                <a href="{% url 'user-profile' review.owner.id %}">
+                    <img class="avatar avatar--md" src="{{review.owner.profile_image.url}}" alt="">
+                </a>
+            </div>
+        </div>
+
+            <div class="comment__details">
+                <a href="{%  url 'user-profile' review.owner.id %}" class="comment__author">{{review.owner.name}}</a>
+                <p class="comment__info">{{review.body|linebreaksbr}}</p>
+            </div>
+        {% endif %}
+        {% endfor %}
+
+{% endblock content %}

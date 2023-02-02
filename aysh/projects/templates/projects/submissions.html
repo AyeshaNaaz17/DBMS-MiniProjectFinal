@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% include "navbar.html" %}
+
+
+{% block content %}
+
+    <center><h3><b><u>Posts</u></b></h3></center>
+
+    {% for submission in submissions %}
+    <div class="col-12">
+        <p>Posted By: {{ submission.owner.name }}</p>
+        <h5><b><i>Title: </i></b><u>{{ submission.title }}</u></h5>
+        <a href="{% url 'submission' submission.id %}">Click here to know More!</a><br>
+        <p style="padding: 1.4rem; font-size: 1.2rem;">{{submission.description|slice:'50'}}</p>
+
+        {% if submission.featured_image %}
+
+        <img style="max-width: 200px;" src="{{ submission.featured_image.url }}">
+        <br>
+        {% endif %}
+        <br>
+        <form action="" method=""><button type="button">Request</button></form>
+        <hr style="border: solid;">
+    </div>
+        
+    {% endfor %}
+
+{% include 'pagination.html' with queryset=submissions custom_range=custom_range %}
+
+{% endblock content %}

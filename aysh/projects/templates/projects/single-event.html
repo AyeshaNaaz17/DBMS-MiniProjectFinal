@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% include "navbar.html" %}
+
+
+{% block content %}
+
+        <p><b>Title: </b>{{event.title}}</p>
+        {% if event.description %}
+        <p>Description: {{ event.description }}</p>
+        {% endif %}
+        {% if event.featured_image %}
+        <p>Image: {{ event.featured_image.url }}</p>
+        {% endif %}
+        {% if event.vote_total %}
+        <p>Vote{{event.vote_total | pluralize:'s'}}: {{event.vote_total}}</p>
+        {% endif %}
+        {% if event.tags %}
+        {% for tag in tags %}
+            <span style="border: 1px solid grey;">{{tag}}</span>
+        {% endfor %}
+        {% endif %}
+        <p>Created: {{ event.created }}</p>
+        <form action="{% url 'events' %}"><button>Go back</button></form>
+        {% csrf_token %}
+        <hr>
+
+
+{% endblock content %}

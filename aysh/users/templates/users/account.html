@@ -1,0 +1,75 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <p></p>
+    <a class="btn btn-dark" href="{% url 'edit-account' %}">Edit Account</a>
+    <a class="btn btn-success" href="">My conferences</a>
+    <a class="btn btn-success" href="">My Journals</a>
+    <a class="btn btn-secondary" href="{% url 'create-submission' %}">Add post</a>
+    <a class="btn btn-secondary" href="{% url 'create-event' %}">Add event</a>
+    <h2>{{profile.name}}</h2>
+    <img class="avatar avatar--lg" src="{{profile.profile_image.url}}" style="max-width: 200px;" alt="">
+    <h4>{{profile.short_intro}}</h4>
+    <p>Based in {{profile.location}}</p>
+    <h5>About me</h5>
+    <p>{{profile.bio}}</p>
+    <hr>
+
+    {% if submissions %}
+    <div class="text-hr">
+        <span class="text-hr__text">My posts</span>
+    </div>
+    {% endif %}
+
+    
+    {% for submission in submissions %}
+    <div class="container row">
+    <div class="card-deck">
+    <div class="col-lg-6 mb-4">
+    <div class="card" style="width: 20rem;">
+        <a href="{% url 'submission' submission.id %}"><img class="card-img-top" src="{{submission.featured_image.url}}" style="width: 100%;" alt=""></a>
+        <h5 class="card-title"><a href="{% url 'submission' submission.id %}">{{submission.title}}</a></h5>
+        <p class="card-text">{{submission.description|slice:"150"}}</p>
+        <a class="btn btn-dark" href="{% url 'update-submission' submission.id %}">Update Post</a>
+        <p></p>
+        <a class="btn btn-outline-danger" href="{% url 'delete-submission' submission.id %}">Delete Post</a>
+        <p></p>
+    </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+    
+
+
+    
+    <div class="text-hr">
+        <span class="text-hr__text">My events</span>
+    </div>
+
+
+    {% for event in events %}
+
+    <div class="container row">
+        <div class="card-deck">
+        <div class="col-lg-6 mb-4">
+        <div class="card" style="width: 20rem;">
+            <a href="{% url 'event' event.id %}"><img class="card-img-top" style="width: 100%;" src="{{event.featured_image.url}}" alt=""></a>
+            <h5 class="card-title"><a href="{% url 'event' event.id %}">{{event.title}}</a></h5>
+            <p class="card-text">{{event.description|slice:"150"}}</p>
+            <a class="btn btn-dark" href="{% url 'update-event' event.id %}">Update Event</a>
+            <p></p>
+            <a class="btn btn-outline-danger" href="{% url 'delete-event' event.id %}">Delete Event</a>
+            <p></p>
+        </div>
+        </div>
+        </div>
+        </div>
+
+    {% endfor %}
+    
+</div>
+
+{% endblock content %}

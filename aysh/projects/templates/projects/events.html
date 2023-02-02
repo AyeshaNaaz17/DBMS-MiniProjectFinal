@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+{% include "navbar.html" %}
+
+
+{% block content %}
+
+    <center><h3><b><u>Events</u></b></h3></center>
+    {% for event in events %}
+
+        <p>Posted By: {{ event.owner.name }}</p>
+        <p><h5>Event Name: </h5>{{ event.title }}</p>
+        <p>Location: {{ event.location }}</p>
+        <p>Posted on: {{event.created}}</p>
+        <a href="{% url 'event' event.id %}">Get to know about it more!</a><br>
+        <hr>
+
+    {% endfor %}
+
+
+{% endblock content %}
